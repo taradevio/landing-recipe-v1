@@ -1,0 +1,26 @@
+---
+import { ArrowUpRight, Smartphone } from '@lucide/astro';
+import type { CtaLink } from '../content/siteContent';
+
+interface Props {
+  cta: CtaLink;
+  tone?: 'primary' | 'cream';
+  compact?: boolean;
+}
+
+const { cta, tone = 'primary', compact = false } = Astro.props;
+const classes = ['btn', 'store-cta', `store-cta--${tone}`, compact && 'store-cta--compact'];
+---
+
+{cta.href ? (
+  <a class:list={classes} href={cta.href} rel="external">
+    <Smartphone aria-hidden="true" size={20} stroke-width={2} />
+    <span>{cta.label}</span>
+    <ArrowUpRight aria-hidden="true" size={18} stroke-width={2} />
+  </a>
+) : (
+  <span class:list={[...classes, 'store-cta--placeholder']} role="status" aria-label={cta.label}>
+    <Smartphone aria-hidden="true" size={20} stroke-width={2} />
+    <span>{compact ? 'Android app coming soon' : cta.label}</span>
+  </span>
+)}

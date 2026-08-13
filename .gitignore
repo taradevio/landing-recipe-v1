@@ -1,0 +1,16 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# test output
+playwright-report/
+test-results/
+
+# environment and editor files
+.env
+.env.production
+.DS_Store
+.idea/

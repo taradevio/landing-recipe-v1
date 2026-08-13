@@ -1,0 +1,31 @@
+---
+import { Plus } from '@lucide/astro';
+import type { FaqItem } from '../content/siteContent';
+
+interface Props {
+  items: FaqItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="section faq-section" id="faq" aria-labelledby="faq-heading">
+  <div class="shell faq-shell">
+    <div class="section-heading" data-reveal>
+      <span class="eyebrow">A few helpful answers</span>
+      <h2 id="faq-heading">Questions, meet answers.</h2>
+      <p>Recipe App is still preparing for release. We will keep this page honest as the final details take shape.</p>
+    </div>
+    <div class="faq-list" data-reveal>
+      {items.map((item, index) => (
+        <details class="collapse faq-item" open={index === 0}>
+          <summary class="collapse-title">
+            <span>{item.question}</span>
+            <Plus class="faq-plus" aria-hidden="true" size={21} />
+          </summary>
+          <div class="collapse-content"><p>{item.answer}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

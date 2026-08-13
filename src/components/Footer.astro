@@ -1,0 +1,27 @@
+---
+import type { SiteContent } from '../content/siteContent';
+import BrandMark from './BrandMark.astro';
+
+interface Props {
+  links: SiteContent['links'];
+}
+
+const { links } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <div class="footer-brand">
+      <a class="brand-link" href="#top" aria-label="Recipe App home"><BrandMark /></a>
+      <p>A thoughtful home for the recipes you keep and the people you cook with.</p>
+    </div>
+    <nav class="footer-links" aria-label="Legal and contact links">
+      {Object.values(links).map((link) => link.href ? <a href={link.href}>{link.label}</a> : <span aria-label={link.label}>{link.label}</span>)}
+    </nav>
+  </div>
+  <div class="shell footer-bottom">
+    <p>© {year} Recipe App. Working product name and identity.</p>
+    <p>Made for kitchens where the best recipes are shared.</p>
+  </div>
+</footer>

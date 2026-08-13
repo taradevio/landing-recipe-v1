@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Recipe App</title>
+  <rect width="64" height="64" rx="16" fill="#FDFCDC"/>
+  <path d="M14 28h36c0 13-7.2 21-18 21S14 41 14 28Z" fill="#F07167" stroke="#17343B" stroke-width="3"/>
+  <path d="M19 35h26" stroke="#FED9B7" stroke-width="3" stroke-linecap="round"/>
+  <path d="M32 28c-1-7 4-12 10-13-1 6-4 10-10 13Z" fill="#00AFB9" stroke="#17343B" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

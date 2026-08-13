@@ -1,0 +1,33 @@
+---
+import { Camera, Globe, MessageCircleMore, NotebookTabs } from '@lucide/astro';
+---
+
+<section class="section scattered" aria-labelledby="scattered-heading">
+  <div class="shell">
+    <div class="section-heading section-heading--center" data-reveal>
+      <span class="eyebrow">Sound familiar?</span>
+      <h2 id="scattered-heading">Great recipes have a habit of <span>ending up everywhere.</span></h2>
+      <p>A screenshot here, a link there, and one handwritten favorite you can never find when dinner starts.</p>
+    </div>
+    <div class="scatter-stage" data-reveal>
+      <article class="scatter-card scatter-card--notebook">
+        <span class="icon-chip icon-chip--coral"><NotebookTabs aria-hidden="true" size={22} /></span>
+        <div><small>Notebook</small><strong>Mom's tomato soup</strong><p>“A little more garlic…”</p></div>
+      </article>
+      <article class="scatter-card scatter-card--web">
+        <span class="icon-chip icon-chip--teal"><Globe aria-hidden="true" size={22} /></span>
+        <div><small>Browser tab 18 of 26</small><strong>The crispy potatoes</strong><p>saved three months ago</p></div>
+      </article>
+      <article class="scatter-card scatter-card--social">
+        <span class="icon-chip icon-chip--peach"><Camera aria-hidden="true" size={22} /></span>
+        <div><small>Saved post</small><strong>Spicy sesame noodles</strong><p>Recipe somewhere in the caption</p></div>
+      </article>
+      <article class="scatter-card scatter-card--message">
+        <span class="icon-chip icon-chip--teal"><MessageCircleMore aria-hidden="true" size={22} /></span>
+        <div><small>Family chat</small><strong>“Can you send that curry again?”</strong><p>Tuesday, 7:42 PM</p></div>
+      </article>
+      <div class="scatter-center" aria-hidden="true"><span>?</span></div>
+    </div>
+    <p class="scatter-resolution" data-reveal><span>Recipe App brings the pieces together.</span> One place to save, find, and cook from.</p>
+  </div>
+</section>
