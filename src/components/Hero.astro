@@ -14,8 +14,6 @@ const { tagline, description, cta } = Astro.props;
 ---
 
 <section class="hero section" id="top">
-  <div class="hero-glow hero-glow--coral" aria-hidden="true"></div>
-  <div class="hero-glow hero-glow--teal" aria-hidden="true"></div>
   <div class="shell hero-grid">
     <div class="hero-copy" data-reveal>
       <span class="eyebrow"><span class="eyebrow-dot"></span> Your recipes, in one happy place</span>
@@ -31,8 +29,6 @@ const { tagline, description, cta } = Astro.props;
       </ul>
     </div>
     <div class="hero-visual" data-reveal>
-      <div class="doodle doodle--dots" aria-hidden="true"></div>
-      <div class="doodle doodle--loop" aria-hidden="true"></div>
       <PhoneMockup variant="home" label="Recipe App home screen showing recipe and cookbook previews" />
       <div class="float-card float-card--save"><BookmarkCheck aria-hidden="true" size={18} /><span><small>Saved</small><strong>Sunday french toast</strong></span></div>
       <div class="float-card float-card--import"><Link2 aria-hidden="true" size={18} /><span><small>Imported</small><strong>Ready for your cookbook</strong></span></div>

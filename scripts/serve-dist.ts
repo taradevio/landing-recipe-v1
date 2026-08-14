@@ -1,6 +1,7 @@
 import { extname, join, normalize } from 'node:path';
 
 const root = join(import.meta.dir, '..', 'dist');
+const testPort = Number.parseInt(process.env.PLAYWRIGHT_TEST_PORT ?? '4173', 10);
 const contentTypes: Record<string, string> = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
@@ -12,7 +13,7 @@ const contentTypes: Record<string, string> = {
 
 const server = Bun.serve({
   hostname: '127.0.0.1',
-  port: 4173,
+  port: testPort,
   async fetch(request) {
     const pathname = decodeURIComponent(new URL(request.url).pathname);
     const relativePath = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');

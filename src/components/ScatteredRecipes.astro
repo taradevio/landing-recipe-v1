@@ -1,5 +1,6 @@
 ---
-import { Camera, Globe, MessageCircleMore, NotebookTabs } from '@lucide/astro';
+import { Globe, MessageCircleMore, NotebookTabs } from '@lucide/astro';
+import InstagramGlyph from './InstagramGlyph.astro';
 ---
 
 <section class="section scattered" aria-labelledby="scattered-heading">
@@ -11,22 +12,22 @@ import { Camera, Globe, MessageCircleMore, NotebookTabs } from '@lucide/astro';
     </div>
     <div class="scatter-stage" data-reveal>
       <article class="scatter-card scatter-card--notebook">
-        <span class="icon-chip icon-chip--coral"><NotebookTabs aria-hidden="true" size={22} /></span>
+        <span class="icon-chip icon-chip--coral"><NotebookTabs aria-hidden="true" size={18} /></span>
         <div><small>Notebook</small><strong>Mom's tomato soup</strong><p>“A little more garlic…”</p></div>
       </article>
       <article class="scatter-card scatter-card--web">
-        <span class="icon-chip icon-chip--teal"><Globe aria-hidden="true" size={22} /></span>
+        <span class="icon-chip icon-chip--peach"><Globe aria-hidden="true" size={18} /></span>
         <div><small>Browser tab 18 of 26</small><strong>The crispy potatoes</strong><p>saved three months ago</p></div>
       </article>
       <article class="scatter-card scatter-card--social">
-        <span class="icon-chip icon-chip--peach"><Camera aria-hidden="true" size={22} /></span>
+        <span class="icon-chip icon-chip--peach"><InstagramGlyph size={18} /></span>
         <div><small>Saved post</small><strong>Spicy sesame noodles</strong><p>Recipe somewhere in the caption</p></div>
       </article>
       <article class="scatter-card scatter-card--message">
-        <span class="icon-chip icon-chip--teal"><MessageCircleMore aria-hidden="true" size={22} /></span>
+        <span class="icon-chip icon-chip--seafoam"><MessageCircleMore aria-hidden="true" size={18} /></span>
         <div><small>Family chat</small><strong>“Can you send that curry again?”</strong><p>Tuesday, 7:42 PM</p></div>
       </article>
-      <div class="scatter-center" aria-hidden="true"><span>?</span></div>
+      <div class="scatter-center" aria-hidden="true"><small>Scattered</small><span>Where did I save it?</span></div>
     </div>
     <p class="scatter-resolution" data-reveal><span>Recipe App brings the pieces together.</span> One place to save, find, and cook from.</p>
   </div>

@@ -16,7 +16,7 @@ export interface RecipeSource {
   title: string;
   description: string;
   icon: 'pencil' | 'link' | 'instagram';
-  accent: 'coral' | 'teal';
+  accent: 'coral' | 'seafoam';
   note?: string;
 }
 
@@ -107,13 +107,13 @@ export const siteContent: SiteContent = {
       title: 'Import from a website',
       description: 'Use a recipe link to bring its written recipe information into your collection.',
       icon: 'link',
-      accent: 'teal',
+      accent: 'seafoam',
     },
     {
       title: 'Import from Instagram',
       description: 'Use the written recipe information provided in a post caption.',
       icon: 'instagram',
-      accent: 'teal',
+      accent: 'seafoam',
       note: 'Only written caption information is imported. Missing details are not inferred.',
     },
   ],

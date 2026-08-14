@@ -1,13 +1,14 @@
 ---
-import { Camera, Info, Link2, PencilLine } from '@lucide/astro';
+import { Info, Link2, PencilLine } from '@lucide/astro';
 import type { RecipeSource } from '../content/siteContent';
+import InstagramGlyph from './InstagramGlyph.astro';
 
 interface Props {
   sources: RecipeSource[];
 }
 
 const { sources } = Astro.props;
-const icons = { pencil: PencilLine, link: Link2, instagram: Camera };
+const icons = { pencil: PencilLine, link: Link2, instagram: InstagramGlyph };
 ---
 
 <section class="section methods" id="add-recipes" aria-labelledby="methods-heading">
@@ -23,7 +24,7 @@ const icons = { pencil: PencilLine, link: Link2, instagram: Camera };
         return (
           <article class:list={['method-card', 'card', `method-card--${source.accent}`]} data-reveal>
             <div class="method-topline">
-              <span class="method-icon"><Icon aria-hidden="true" size={25} /></span>
+              <span class:list={['method-icon', `method-icon--${source.icon}`]}><Icon aria-hidden="true" size={18} /></span>
               <span class="method-number">0{index + 1}</span>
             </div>
             <h3>{source.title}</h3>
