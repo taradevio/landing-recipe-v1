@@ -9,7 +9,7 @@ const viewports = [
 ];
 
 for (const viewport of viewports) {
-  test(`${viewport.name} layout has no horizontal overflow`, async ({ page }) => {
+  test(`${viewport.name} layout has one H1 and no horizontal overflow`, async ({ page }) => {
     await page.setViewportSize(viewport);
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
@@ -29,29 +29,76 @@ test('320px safety layout stays within the viewport', async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 });
 
-test('FAQ works natively and the unfinished demo has no fake play control', async ({ page }) => {
+test('uses the final Noomori architecture without legacy homepage sections', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Keep the recipes your home comes back to.' })).toBeVisible();
+  await expect(page.getByText('Recipe App', { exact: true })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: /questions, meet answers/i })).toHaveCount(0);
+  await expect(page.locator('.phone')).toHaveCount(0);
+  expect(await page.locator('[data-asset-missing]').count()).toBeGreaterThan(0);
+});
+
+test('all primary navigation anchors resolve to page sections', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/');
+  for (const href of ['#product', '#how-it-works', '#household']) {
+    await expect(page.locator(`.desktop-nav a[href="${href}"]`)).toHaveCount(1);
+    await expect(page.locator(href)).toHaveCount(1);
+  }
+});
+
+test('mobile menu supports Escape and restores focus', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  const question = page.getByText('What kinds of recipes can I add?', { exact: true });
-  const details = question.locator('..').locator('..');
-  await expect(details).toHaveAttribute('open', '');
-  await question.click();
-  await expect(details).not.toHaveAttribute('open', '');
-  await expect(page.getByText('Demo video coming soon')).toBeVisible();
-  await expect(page.locator('video')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: /play/i })).toHaveCount(0);
+  const toggle = page.getByRole('button', { name: /menu/i });
+  await toggle.focus();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('#mobile-menu')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle).toBeFocused();
+});
+
+test('prelaunch availability is status text, not a dead link', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('status').first()).toContainText('Android app coming soon');
+  await expect(page.getByRole('link', { name: 'Android app coming soon' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /see how it works/i })).toBeVisible();
 });
 
 test('mobile interactive targets are touch friendly', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  const tooSmall = await page.locator('a:visible, button:visible, summary:visible').evaluateAll((elements) =>
+  const tooSmall = await page.locator('a:visible, button:visible').evaluateAll((elements) =>
     elements
       .map((element) => ({ label: element.textContent?.trim(), rect: element.getBoundingClientRect() }))
       .filter(({ rect }) => rect.width < 44 || rect.height < 44)
       .map(({ label, rect }) => ({ label, width: rect.width, height: rect.height })),
   );
   expect(tooSmall).toEqual([]);
+});
+
+test('generated photography reserves intrinsic space', async ({ page }) => {
+  await page.goto('/');
+  const photos = page.locator('.household-photo img, .closing-photo img');
+  await expect(photos).toHaveCount(2);
+  const invalid = await photos.evaluateAll((images) =>
+    images.filter((image) => !(image instanceof HTMLImageElement) || image.width === 0 || image.height === 0).length,
+  );
+  expect(invalid).toBe(0);
+});
+
+test('reduced motion keeps all content visible', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const hiddenReveal = await page.locator('[data-reveal]').evaluateAll((elements) =>
+    elements.filter((element) => {
+      const style = getComputedStyle(element);
+      return style.opacity === '0' || style.visibility === 'hidden';
+    }).length,
+  );
+  expect(hiddenReveal).toBe(0);
 });
 
 for (const viewport of [viewports[0], viewports[3]]) {

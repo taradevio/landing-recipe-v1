@@ -1,27 +1,90 @@
 ---
-import BrandMark from './BrandMark.astro';
-import StoreCta from './StoreCta.astro';
-import type { CtaLink } from '../content/siteContent';
+import { Menu, X } from '@lucide/astro';
+import type { AvailabilityAction, NavigationLink } from '../content/siteContent';
+import Availability from './Availability.astro';
+import Wordmark from './Wordmark.astro';
 
 interface Props {
-  navigation: Array<{ label: string; href: string }>;
-  cta: CtaLink;
+  navigation: NavigationLink[];
+  availability: AvailabilityAction;
 }
 
-const { navigation, cta } = Astro.props;
+const { navigation, availability } = Astro.props;
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="shell header-inner">
-    <a class="brand-link" href="#top" aria-label="Recipe App home">
-      <BrandMark compact />
-    </a>
-    <nav class="site-nav" aria-label="Primary navigation">
+    <a class="wordmark-link" href="#top" aria-label="Noomori home"><Wordmark /></a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
       {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>
-    <div class="header-cta">
-      <StoreCta cta={cta} compact />
-    </div>
-    <a class="mobile-demo-link" href="#how-it-works">See demo</a>
+    <div class="header-availability"><Availability action={availability} /></div>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+      <span>Menu</span>
+      <Menu class="menu-open-icon" aria-hidden="true" size={21} stroke-width={1.8} />
+      <X class="menu-close-icon" aria-hidden="true" size={21} stroke-width={1.8} />
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="shell mobile-menu-inner" aria-label="Mobile navigation">
+      {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+      <Availability action={availability} />
+    </nav>
   </div>
 </header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const toggle = header?.querySelector<HTMLButtonElement>('.menu-toggle');
+  const menu = header?.querySelector<HTMLElement>('#mobile-menu');
+  let returnFocus: HTMLElement | null = null;
+
+  const menuFocusable = () => menu
+    ? [...menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')]
+    : [];
+
+  const setMenu = (open: boolean) => {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    header?.classList.toggle('menu-is-open', open);
+    document.documentElement.classList.toggle('menu-open', open);
+    if (open) {
+      returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : toggle;
+      menuFocusable()[0]?.focus();
+    } else {
+      returnFocus?.focus();
+    }
+  };
+
+  toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+
+  document.addEventListener('keydown', (event) => {
+    if (!toggle || toggle.getAttribute('aria-expanded') !== 'true') return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setMenu(false);
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const focusable = [toggle, ...menuFocusable()];
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  });
+
+  const sentinel = document.querySelector('[data-header-sentinel]');
+  if (header && sentinel && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      header.classList.toggle('site-header--scrolled', !entry.isIntersecting);
+    });
+    observer.observe(sentinel);
+  }
+</script>

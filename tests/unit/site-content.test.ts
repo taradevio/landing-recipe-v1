@@ -1,25 +1,65 @@
 import { describe, expect, test } from 'bun:test';
-import { siteContent } from '../../src/content/siteContent';
+import { validateReleaseContent } from '../../scripts/validate-release';
+import { siteContent, type SiteContent } from '../../src/content/siteContent';
 
-describe('site content contract', () => {
-  test('keeps all provisional release destinations explicit', () => {
-    expect(siteContent.product.provisional).toBe(true);
-    expect(siteContent.primaryCta.href).toBeUndefined();
-    expect(siteContent.primaryCta.provisional).toBe(true);
-    expect(Object.values(siteContent.links).every((link) => link.provisional)).toBe(true);
+describe('Noomori site content contract', () => {
+  test('uses an honest non-interactive prelaunch state', () => {
+    expect(siteContent.releaseStage).toBe('prelaunch');
+    expect(siteContent.availability.kind).toBe('status');
+    expect(siteContent.availability.href).toBeUndefined();
+    expect(siteContent.availability.label).toBe('Android app coming soon');
   });
 
-  test('supports the three documented recipe entry methods', () => {
-    expect(siteContent.recipeSources.map((source) => source.icon)).toEqual(['pencil', 'link', 'instagram']);
+  test('keeps the approved product story in order', () => {
+    expect(siteContent.stories.map((story) => story.id)).toEqual([
+      'capture',
+      'make-it-yours',
+      'cook-together',
+    ]);
   });
 
-  test('does not imply missing Instagram details are inferred', () => {
-    const instagram = siteContent.recipeSources.find((source) => source.icon === 'instagram');
-    expect(instagram?.note?.toLowerCase()).toContain('not inferred');
+  test('uses exactly five supporting feature modules', () => {
+    expect(siteContent.supportingFeatures).toHaveLength(5);
+    expect(siteContent.supportingFeatures.map((feature) => feature.id)).toEqual([
+      'search',
+      'source',
+      'details',
+      'favorites',
+      'activity',
+    ]);
   });
 
-  test('uses a non-interactive storyboard until the demo is ready', () => {
-    expect(siteContent.demo.src).toBeUndefined();
-    expect(siteContent.demo.steps).toHaveLength(3);
+  test('keeps incomplete imports honest and editable', () => {
+    const copy = JSON.stringify([siteContent.stories, siteContent.reliability]).toLowerCase();
+    expect(copy).toContain('partial import');
+    expect(copy).toContain('add what is missing');
+    expect(copy).not.toContain('infer missing');
+  });
+
+  test('provides dimensions and meaningful text for every media slot', () => {
+    const media = [
+      ...siteContent.hero.media,
+      siteContent.productProof.media,
+      ...siteContent.stories.flatMap((story) => story.media),
+      siteContent.household.productMedia,
+      siteContent.household.photo,
+      ...siteContent.supportingFeatures.map((feature) => feature.media),
+      siteContent.closingScene.photo,
+    ];
+    expect(media.every((asset) => asset.width > 0 && asset.height > 0 && asset.alt.length > 20)).toBe(true);
+  });
+
+  test('validates both prelaunch and live CTA states', () => {
+    expect(validateReleaseContent(siteContent, { requireAssets: false })).toEqual([]);
+    const liveContent: SiteContent = {
+      ...siteContent,
+      releaseStage: 'live',
+      availability: {
+        kind: 'link',
+        label: 'Get Noomori',
+        href: 'https://play.google.com/store/apps/details?id=example.noomori',
+      },
+    };
+    expect(validateReleaseContent(liveContent, { requireAssets: false })).toEqual([]);
   });
 });

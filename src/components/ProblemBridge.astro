@@ -1,0 +1,36 @@
+---
+import type { SiteContent } from '../content/siteContent';
+import Icon from './Icon.astro';
+
+interface Props {
+  problem: SiteContent['problem'];
+}
+
+const { problem } = Astro.props;
+---
+
+<section class="section problem-section" aria-labelledby="problem-heading">
+  <div class="shell">
+    <div class="section-intro problem-intro" data-reveal>
+      <h2 id="problem-heading">{problem.title}</h2>
+      <p>{problem.description}</p>
+    </div>
+    <div class="fragment-stage" data-reveal>
+      {problem.fragments.map((fragment, index) => (
+        <article class={`source-fragment source-fragment--${index + 1}`}>
+          <span class="fragment-icon"><Icon name={fragment.icon} size={18} /></span>
+          <div>
+            <small>{fragment.source}</small>
+            <strong>{fragment.title}</strong>
+            <p>{fragment.detail}</p>
+          </div>
+        </article>
+      ))}
+      <div class="fragment-center" aria-hidden="true">
+        <span>Noomori</span>
+        <small>one recipe home</small>
+      </div>
+    </div>
+    <p class="problem-resolution" data-reveal>{problem.resolution}</p>
+  </div>
+</section>

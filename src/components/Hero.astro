@@ -1,38 +1,41 @@
 ---
-import { ArrowDown, BookmarkCheck, Link2, UsersRound } from '@lucide/astro';
-import type { CtaLink } from '../content/siteContent';
-import PhoneMockup from './PhoneMockup.astro';
-import StoreCta from './StoreCta.astro';
+import { ArrowDownRight } from '@lucide/astro';
+import type { SiteContent } from '../content/siteContent';
+import Availability from './Availability.astro';
+import ProductMedia from './ProductMedia.astro';
 
 interface Props {
-  tagline: string;
-  description: string;
-  cta: CtaLink;
+  brand: SiteContent['brand'];
+  hero: SiteContent['hero'];
+  availability: SiteContent['availability'];
 }
 
-const { tagline, description, cta } = Astro.props;
+const { brand, hero, availability } = Astro.props;
 ---
 
-<section class="hero section" id="top">
+<section class="hero" id="top" data-header-sentinel>
+  <div class="hero-light" aria-hidden="true"></div>
   <div class="shell hero-grid">
     <div class="hero-copy" data-reveal>
-      <span class="eyebrow"><span class="eyebrow-dot"></span> Your recipes, in one happy place</span>
-      <h1>One home for every recipe <span>you love.</span></h1>
-      <p>{description}</p>
+      <span class="eyebrow">{brand.eyebrow}</span>
+      <h1>{hero.headline}</h1>
+      <p>{hero.description}</p>
       <div class="hero-actions">
-        <StoreCta cta={cta} />
-        <a class="text-link text-link--large" href="#how-it-works">See how it works <ArrowDown aria-hidden="true" size={18} /></a>
+        <a class="primary-action" href={hero.secondaryAction.href}>
+          <span>{hero.secondaryAction.label}</span>
+          <span class="action-icon"><ArrowDownRight aria-hidden="true" size={18} stroke-width={1.8} /></span>
+        </a>
+        <Availability action={availability} />
       </div>
-      <ul class="hero-proof" aria-label="Recipe App highlights">
-        <li><BookmarkCheck aria-hidden="true" size={18} /> Keep your favorites close</li>
-        <li><UsersRound aria-hidden="true" size={18} /> Share with your household</li>
-      </ul>
     </div>
-    <div class="hero-visual" data-reveal>
-      <PhoneMockup variant="home" label="Recipe App home screen showing recipe and cookbook previews" />
-      <div class="float-card float-card--save"><BookmarkCheck aria-hidden="true" size={18} /><span><small>Saved</small><strong>Sunday french toast</strong></span></div>
-      <div class="float-card float-card--import"><Link2 aria-hidden="true" size={18} /><span><small>Imported</small><strong>Ready for your cookbook</strong></span></div>
+    <div class="hero-media" aria-label="Noomori product previews">
+      {hero.media.map((media, index) => (
+        <ProductMedia
+          media={media}
+          prominent={index === 1}
+          class={`hero-media-card hero-media-card--${index + 1}`}
+        />
+      ))}
     </div>
   </div>
-  <p class="hero-note shell">{tagline}</p>
 </section>

@@ -1,0 +1,9 @@
+---
+interface Props {
+  large?: boolean;
+}
+
+const { large = false } = Astro.props;
+---
+
+<span class:list={['wordmark', { 'wordmark--large': large }]}>Noomori</span>

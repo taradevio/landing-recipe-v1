@@ -1,0 +1,22 @@
+---
+import type { SiteContent } from '../content/siteContent';
+import ProductMedia from './ProductMedia.astro';
+
+interface Props {
+  proof: SiteContent['productProof'];
+}
+
+const { proof } = Astro.props;
+---
+
+<section class="section product-proof" id="product" aria-labelledby="proof-heading">
+  <div class="shell proof-shell">
+    <div class="proof-copy" data-reveal>
+      <h2 id="proof-heading">{proof.title}</h2>
+      <p>{proof.description}</p>
+    </div>
+    <div data-reveal>
+      <ProductMedia media={proof.media} prominent class="proof-media" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+---
+import { Check } from '@lucide/astro';
+import type { SiteContent } from '../content/siteContent';
+import ProductMedia from './ProductMedia.astro';
+
+interface Props {
+  household: SiteContent['household'];
+}
+
+const { household } = Astro.props;
+---
+
+<section class="section household" id="household" aria-labelledby="household-heading">
+  <div class="shell household-heading" data-reveal>
+    <h2 id="household-heading">{household.title}</h2>
+    <p>{household.description}</p>
+    <ul>
+      {household.points.map((point) => <li><Check aria-hidden="true" size={17} stroke-width={2} />{point}</li>)}
+    </ul>
+  </div>
+  <div class="shell household-composition">
+    <div class="household-product" data-reveal>
+      <ProductMedia media={household.productMedia} prominent />
+    </div>
+    <picture class="household-photo" data-reveal>
+      {household.photo.srcSmall && <source media="(max-width: 47.999rem)" srcset={household.photo.srcSmall} />}
+      <img
+        src={household.photo.src}
+        alt={household.photo.alt}
+        width={household.photo.width}
+        height={household.photo.height}
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+  </div>
+</section>

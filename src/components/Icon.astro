@@ -1,0 +1,39 @@
+---
+import {
+  Activity,
+  Clock3,
+  FileText,
+  Heart,
+  Link2,
+  MessageCircleMore,
+  NotebookTabs,
+  PencilLine,
+  Search,
+  Share2,
+  Sparkles,
+} from '@lucide/astro';
+import type { IconName } from '../content/siteContent';
+
+interface Props {
+  name: IconName;
+  size?: number;
+}
+
+const { name, size = 20 } = Astro.props;
+const icons = {
+  activity: Activity,
+  clock: Clock3,
+  edit: PencilLine,
+  favorite: Heart,
+  link: Link2,
+  message: MessageCircleMore,
+  notebook: NotebookTabs,
+  search: Search,
+  share: Share2,
+  source: FileText,
+  spark: Sparkles,
+};
+const Glyph = icons[name];
+---
+
+<Glyph aria-hidden="true" size={size} stroke-width={1.8} />

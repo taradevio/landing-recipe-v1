@@ -1,0 +1,40 @@
+---
+import type { ProductStory } from '../content/siteContent';
+import Icon from './Icon.astro';
+import ProductMedia from './ProductMedia.astro';
+
+interface Props {
+  stories: ProductStory[];
+}
+
+const { stories } = Astro.props;
+---
+
+<div id="how-it-works" class="story-sequence" aria-label="How Noomori works">
+  {stories.map((story) => (
+    <section class:list={['section', 'story-section', `story-section--${story.id}`]} aria-labelledby={`${story.id}-heading`}>
+      <div class="shell story-shell">
+        <div class="story-copy" data-reveal>
+          <span class="story-marker" aria-hidden="true">{story.marker}</span>
+          <h2 id={`${story.id}-heading`}>{story.title}</h2>
+          <p>{story.description}</p>
+          {story.supporting && (
+            <div class="story-supporting">
+              {story.supporting.map((item) => (
+                <article>
+                  <span><Icon name={item.icon} size={18} /></span>
+                  <div><strong>{item.title}</strong><p>{item.description}</p></div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+        <div class="story-media" data-reveal>
+          {story.media.map((media, index) => (
+            <ProductMedia media={media} prominent class={`story-media-item story-media-item--${index + 1}`} />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+</div>

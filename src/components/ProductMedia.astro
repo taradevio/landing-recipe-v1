@@ -1,0 +1,59 @@
+---
+import { ImageIcon } from '@lucide/astro';
+import type { MediaAsset } from '../content/siteContent';
+
+interface Props {
+  media: MediaAsset;
+  class?: string;
+  prominent?: boolean;
+}
+
+const { media, class: className, prominent = false } = Astro.props;
+const loading = media.loading ?? 'lazy';
+---
+
+{
+  media.src ? (
+    media.kind === 'video' ? (
+      <video
+        class:list={['product-media', className]}
+        width={media.width}
+        height={media.height}
+        poster={media.poster}
+        muted
+        playsinline
+        controls
+        preload="metadata"
+        aria-label={media.alt}
+      >
+        <source src={media.src} />
+        Your browser does not support this product walkthrough.
+      </video>
+    ) : (
+      <picture class:list={['product-media-picture', className]}>
+        {media.srcSmall && <source media="(max-width: 47.999rem)" srcset={media.srcSmall} />}
+        <img
+          class="product-media"
+          src={media.src}
+          alt={media.alt}
+          width={media.width}
+          height={media.height}
+          loading={loading}
+          decoding="async"
+        />
+      </picture>
+    )
+  ) : (
+    <figure
+      class:list={['asset-slot', className, { 'asset-slot--prominent': prominent }]}
+      role="img"
+      aria-label={`${media.alt}. Product capture pending.`}
+      data-asset-missing={media.slotLabel}
+    >
+      <span class="asset-slot__icon"><ImageIcon aria-hidden="true" size={22} stroke-width={1.6} /></span>
+      <span class="asset-slot__status">Product capture needed</span>
+      <strong>{media.slotLabel}</strong>
+      <small>{media.width} × {media.height}</small>
+    </figure>
+  )
+}

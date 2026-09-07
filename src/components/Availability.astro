@@ -1,0 +1,26 @@
+---
+import { Smartphone } from '@lucide/astro';
+import type { AvailabilityAction } from '../content/siteContent';
+
+interface Props {
+  action: AvailabilityAction;
+  tone?: 'light' | 'dark';
+}
+
+const { action, tone = 'light' } = Astro.props;
+const classes = ['availability', `availability--${tone}`];
+---
+
+{
+  action.kind === 'link' && action.href ? (
+    <a class:list={classes} href={action.href} rel="external">
+      <Smartphone aria-hidden="true" size={18} stroke-width={1.8} />
+      <span>{action.label}</span>
+    </a>
+  ) : (
+    <span class:list={classes} role="status">
+      <Smartphone aria-hidden="true" size={18} stroke-width={1.8} />
+      <span>{action.label}</span>
+    </span>
+  )
+}

@@ -1,0 +1,32 @@
+---
+import type { SupportingFeature } from '../content/siteContent';
+import Icon from './Icon.astro';
+import ProductMedia from './ProductMedia.astro';
+
+interface Props {
+  features: SupportingFeature[];
+}
+
+const { features } = Astro.props;
+---
+
+<section class="section supporting" aria-labelledby="supporting-heading">
+  <div class="shell">
+    <div class="section-intro" data-reveal>
+      <h2 id="supporting-heading">The useful details stay close.</h2>
+      <p>Everything around a recipe should help you find it, understand it, or cook from it.</p>
+    </div>
+    <div class="feature-grid">
+      {features.map((feature) => (
+        <article class:list={['feature-module', `feature-module--${feature.id}`, `feature-module--${feature.size}`]} data-reveal>
+          <div class="feature-copy">
+            <span class="feature-icon"><Icon name={feature.icon} size={19} /></span>
+            <h3>{feature.title}</h3>
+            <p>{feature.description}</p>
+          </div>
+          <ProductMedia media={feature.media} class="feature-media" />
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

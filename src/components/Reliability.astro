@@ -1,0 +1,28 @@
+---
+import type { SiteContent } from '../content/siteContent';
+import Icon from './Icon.astro';
+
+interface Props {
+  reliability: SiteContent['reliability'];
+}
+
+const { reliability } = Astro.props;
+---
+
+<section class="section reliability" aria-labelledby="reliability-heading">
+  <div class="shell reliability-shell">
+    <div class="reliability-intro" data-reveal>
+      <span class="eyebrow eyebrow--dark">Built for real recipes</span>
+      <h2 id="reliability-heading">{reliability.title}</h2>
+      <p>{reliability.description}</p>
+    </div>
+    <div class="state-grid">
+      {reliability.states.map((state) => (
+        <article data-reveal>
+          <span><Icon name={state.icon} size={19} /></span>
+          <div><h3>{state.title}</h3><p>{state.description}</p></div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

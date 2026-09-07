@@ -1,22 +1,36 @@
 ---
 import '@fontsource-variable/nunito-sans';
+import '@fontsource-variable/outfit';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description: string;
+  socialImage?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, socialImage } = Astro.props;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const absoluteSocialImage = socialImage ? new URL(socialImage, Astro.url) : undefined;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="recipe-home">
+<html lang="en" data-theme="noomori">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#FFFDF8" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {absoluteSocialImage && <meta property="og:image" content={absoluteSocialImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {absoluteSocialImage && <meta name="twitter:image" content={absoluteSocialImage} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>

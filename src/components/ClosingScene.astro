@@ -1,0 +1,33 @@
+---
+import type { SiteContent } from '../content/siteContent';
+import Availability from './Availability.astro';
+
+interface Props {
+  scene: SiteContent['closingScene'];
+  availability: SiteContent['availability'];
+}
+
+const { scene, availability } = Astro.props;
+---
+
+<section class="closing-scene" aria-labelledby="closing-heading">
+  <div class="closing-glow" aria-hidden="true"></div>
+  <div class="shell closing-shell">
+    <div class="closing-copy" data-reveal>
+      <h2 id="closing-heading">{scene.title}</h2>
+      <p>{scene.description}</p>
+      <Availability action={availability} tone="dark" />
+    </div>
+    <picture class="closing-photo" data-reveal>
+      {scene.photo.srcSmall && <source media="(max-width: 47.999rem)" srcset={scene.photo.srcSmall} />}
+      <img
+        src={scene.photo.src}
+        alt={scene.photo.alt}
+        width={scene.photo.width}
+        height={scene.photo.height}
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+  </div>
+</section>

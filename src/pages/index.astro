@@ -1,34 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Demo from '../components/Demo.astro';
-import Faq from '../components/Faq.astro';
-import FinalCta from '../components/FinalCta.astro';
+import ClosingScene from '../components/ClosingScene.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import HouseholdFeature from '../components/HouseholdFeature.astro';
-import PersonalJourney from '../components/PersonalJourney.astro';
-import RecipeMethods from '../components/RecipeMethods.astro';
-import ScatteredRecipes from '../components/ScatteredRecipes.astro';
+import HouseholdSpotlight from '../components/HouseholdSpotlight.astro';
+import ProblemBridge from '../components/ProblemBridge.astro';
+import ProductBridge from '../components/ProductBridge.astro';
+import ProductProof from '../components/ProductProof.astro';
+import Reliability from '../components/Reliability.astro';
+import StoryFeatures from '../components/StoryFeatures.astro';
+import SupportingFeatures from '../components/SupportingFeatures.astro';
 import { siteContent } from '../content/siteContent';
 ---
 
 <BaseLayout
-  title={`${siteContent.product.name} — ${siteContent.product.tagline}`}
-  description={siteContent.product.description}
+  title={siteContent.metadata.title}
+  description={siteContent.metadata.description}
+  socialImage={siteContent.metadata.socialImage}
 >
-  <Header navigation={siteContent.navigation} cta={siteContent.primaryCta} />
+  <Header navigation={siteContent.navigation} availability={siteContent.availability} />
   <main id="main-content">
-    <Hero tagline={siteContent.product.tagline} description={siteContent.product.description} cta={siteContent.primaryCta} />
-    <ScatteredRecipes />
-    <PersonalJourney />
-    <Demo demo={siteContent.demo} />
-    <RecipeMethods sources={siteContent.recipeSources} />
-    <HouseholdFeature />
-    <Faq items={siteContent.faq} />
-    <FinalCta cta={siteContent.primaryCta} />
+    <Hero brand={siteContent.brand} hero={siteContent.hero} availability={siteContent.availability} />
+    <ProblemBridge problem={siteContent.problem} />
+    <ProductBridge title={siteContent.productBridge.title} />
+    <ProductProof proof={siteContent.productProof} />
+    <StoryFeatures stories={siteContent.stories} />
+    <HouseholdSpotlight household={siteContent.household} />
+    <SupportingFeatures features={siteContent.supportingFeatures} />
+    <Reliability reliability={siteContent.reliability} />
+    <ClosingScene scene={siteContent.closingScene} availability={siteContent.availability} />
   </main>
-  <Footer links={siteContent.links} />
+  <Footer footer={siteContent.footer} />
 
   <script>
     const revealItems = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
